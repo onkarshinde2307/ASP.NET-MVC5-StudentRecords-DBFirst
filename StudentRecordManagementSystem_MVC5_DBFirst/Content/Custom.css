@@ -1,0 +1,120 @@
+﻿/* General Body Styling */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Navbar Styling */
+.navbar {
+    background: linear-gradient(90deg, #007bff, #6610f2);
+    padding: 0.75rem 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+    animation: fadeInSlide 1s ease-in-out;
+}
+
+    .navbar-brand img {
+        height: 40px;
+        margin-right: 10px;
+    }
+
+.navbar-nav .nav-link,
+.btn-outline-primary {
+    color: #fff;
+    border-color: #fff;
+    transition: all 0.3s ease;
+}
+
+    .navbar-nav .nav-link:hover,
+    .btn-outline-primary:hover {
+        background-color: #fff;
+        color: #007bff;
+    }
+
+/* Carousel Styling */
+.carousel-inner img {
+    height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.carousel {
+    margin-top: 20px;
+}
+
+/* Section Styling */
+section.bg-light {
+    background-color: #f8f9fa;
+    padding: 60px 0;
+}
+
+h2 {
+    font-weight: 700;
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+p.lead {
+    color: #555;
+    font-size: 1.1rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    padding: 0.5rem 1.25rem;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+/* Animations */
+@keyframes fadeInSlide {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Footer Styling */
+footer {
+    background-color: #f1f1f1;
+    padding: 1rem 0;
+    text-align: center;
+    color: #333;
+    font-size: 0.9rem;
+    border-top: 1px solid #ddd;
+}
+
+/* Card Hover Effect */
+.card,
+.shadow {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .card:hover,
+    .shadow:hover {
+        transform: scale(1.02);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }

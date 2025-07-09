@@ -1,0 +1,26 @@
+﻿@model StudentRecordManagementSystem_MVC5_DBFirst.Models.Student
+@{
+    ViewBag.Title = "Create Student";
+}
+
+<div class="container my-4">
+    <h2 class="text-primary mb-3">Create Student</h2>
+
+    <div class="alert alert-info">
+        <strong>Empowering Every Student to Succeed!</strong>
+        <p>Learn with expert faculty. Personalized attention. Bright future starts here.</p>
+    </div>
+
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.Partial("_StudentForm", Model)
+
+        <button type="submit" class="btn btn-success mt-3">
+            <i class="fa fa-save"></i> Save
+        </button>
+        <a class="btn btn-secondary mt-3" href="@Url.Action("Index")">Cancel</a>
+    }
+</div>

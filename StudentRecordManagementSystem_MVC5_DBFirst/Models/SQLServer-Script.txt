@@ -1,0 +1,22 @@
+﻿CREATE DATABASE StudentDB;
+GO
+USE StudentDB;
+
+CREATE TABLE Students (
+    StudentId INT PRIMARY KEY IDENTITY(1,1),
+    FullName NVARCHAR(100) NOT NULL,
+    Email NVARCHAR(100),
+    Phone NVARCHAR(20),
+    Gender NVARCHAR(10),
+    EnrollmentDate DATE,
+    Address NVARCHAR(200)
+);
+ALTER TABLE Students ADD Photo NVARCHAR(200) NULL;
+
+select * from Students
+SELECT * FROM Students WHERE StudentId = 11;
+SELECT StudentId, FullName FROM Students
+
+
+INSERT INTO Students (FullName, Email, Phone, Gender, EnrollmentDate, Address, Photo)
+VALUES ('Test User', 'test@example.com', '1234567890', 'Male', GETDATE(), 'Test Address', '/Content/images/avatars/default_male.png')

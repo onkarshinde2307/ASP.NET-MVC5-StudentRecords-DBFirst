@@ -1,0 +1,72 @@
+﻿@model IEnumerable<StudentRecordManagementSystem_MVC5_DBFirst.Models.Student>
+
+@{
+    ViewBag.Title = "Student List";
+}
+
+ 
+
+ 
+
+<!-- ALERTS -->
+<div class="container">
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+</div>
+
+<!-- STUDENT CARDS -->
+<div class="container">
+    <div class="row">
+        @if (!Model.Any())
+        {
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    No students found. Please add a new student.
+                </div>
+            </div>
+        }
+        else
+        {
+            foreach (var student in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <img src="@student.Photo" class="card-img-top" alt="Student Photo" style="max-height:300px; width:100%; object-fit:contain; background-color:#f8f8f8;">
+                        <div class="card-body">
+                            <h5 class="card-title">@student.FullName</h5>
+                            <p class="card-text text-muted small">
+                                <i class="fa fa-envelope"></i> @student.Email <br />
+                                <i class="fa fa-phone"></i> @student.Phone <br />
+                                <i class="fa fa-user"></i> @student.Gender <br />
+                                <i class="fa fa-calendar"></i> @student.EnrollmentDate?.ToShortDateString() <br />
+                                <i class="fa fa-map-marker-alt"></i> @student.Address
+                            </p>
+                            <div class="d-flex justify-content-between">
+                                <a href="@Url.Action("Edit", new { id = student.StudentId })" class="btn btn-primary btn-sm">
+                                    <i class="fa fa-edit"></i> Edit
+                                </a>
+                                <a href="@Url.Action("Delete", new { id = student.StudentId })" class="btn btn-danger btn-sm">
+                                    <i class="fa fa-trash"></i> Delete
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        }
+    </div>
+</div>

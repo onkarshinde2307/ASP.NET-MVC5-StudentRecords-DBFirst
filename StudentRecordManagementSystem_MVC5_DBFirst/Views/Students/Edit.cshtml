@@ -1,0 +1,60 @@
+﻿@model StudentRecordManagementSystem_MVC5_DBFirst.Models.Student
+
+@{
+    ViewBag.Title = "Edit Student";
+}
+
+<h2 class="text-primary mb-4">Edit Student</h2>
+
+@using (Html.BeginForm("Edit", "Students", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.StudentId)
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            @Html.LabelFor(model => model.FullName)
+            @Html.TextBoxFor(model => model.FullName, new { @class = "form-control" })
+        </div>
+        <div class="col-md-6">
+            @Html.LabelFor(model => model.Email)
+            @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            @Html.LabelFor(model => model.Phone)
+            @Html.TextBoxFor(model => model.Phone, new { @class = "form-control" })
+        </div>
+        <div class="col-md-6">
+            @Html.LabelFor(model => model.Gender)
+            @Html.DropDownListFor(model => model.Gender,
+                new SelectList(new[] { "Male", "Female" }, Model.Gender),
+                "Select Gender", new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            @Html.LabelFor(model => model.EnrollmentDate)
+            @Html.TextBoxFor(model => model.EnrollmentDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+        </div>
+        <div class="col-md-6">
+            @Html.LabelFor(model => model.Address)
+            @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Change Photo (optional)</label>
+        <input type="file" name="PhotoFile" class="form-control" />
+        <br />
+        <img src="@Model.Photo" style="max-height:150px;" />
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        <i class="fa fa-save"></i> Save Changes
+    </button>
+    <a href="@Url.Action("Index", "Students")" class="btn btn-secondary">Cancel</a>
+}
