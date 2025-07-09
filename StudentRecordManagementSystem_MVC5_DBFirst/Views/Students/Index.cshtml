@@ -1,40 +1,162 @@
 ﻿@model IEnumerable<StudentRecordManagementSystem_MVC5_DBFirst.Models.Student>
-
 @{
     ViewBag.Title = "Student List";
+    string keyword = Request.QueryString["search"] ?? "";
+    Func<string, string> highlight = text =>
+    {
+        if (!string.IsNullOrEmpty(keyword) && !string.IsNullOrWhiteSpace(text))
+        {
+            return System.Text.RegularExpressions.Regex.Replace(
+                text,
+                keyword,
+                match => $"<span class=\"highlight\">{match.Value}</span>",
+                System.Text.RegularExpressions.RegexOptions.IgnoreCase
+            );
+        }
+        return text;
+    };
 }
 
- 
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
 
- 
+    .hero-section {
+        background: linear-gradient(90deg, #007bff, #6610f2);
+        padding: 40px 0;
+        border-radius: 0 0 20px 20px;
+        color: white;
+        text-align: center;
+    }
+
+        .hero-section h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .hero-section p {
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+    .search-bar-container {
+        background-color: #fff;
+        padding: 20px 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .student-card {
+        border-radius: 12px;
+        overflow: hidden;
+        background: white;
+        border: none;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .student-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .student-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: contain;
+            background-color: #f8f8f8;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .student-card .card-body {
+            padding: 20px;
+        }
+
+        .student-card .card-title {
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+    .student-info i {
+        width: 20px;
+        text-align: center;
+        margin-right: 6px;
+        color: #007bff;
+    }
+
+    .student-info p {
+        margin-bottom: 6px;
+        font-size: 0.95rem;
+        color: #555;
+    }
+
+    .card-footer {
+        background-color: #f8f9fa;
+        border-top: 1px solid #eee;
+        padding: 12px 20px;
+    }
+
+    .btn-sm {
+        border-radius: 50px;
+    }
+
+    .highlight {
+        background-color: #ffc107;
+        color: #212529;
+        padding: 2px 4px;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+</style>
 
 <!-- ALERTS -->
-<div class="container">
+<div class="container mt-3">
     @if (TempData["Success"] != null)
     {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
             @TempData["Success"]
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     }
-
     @if (TempData["Error"] != null)
     {
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
             @TempData["Error"]
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     }
 </div>
 
+<!-- HERO SECTION -->
+<section class="hero-section">
+    <div class="container">
+        <h1 class="fa fa-graduation-cap"> Student Management Portal</h1>
+        <p class="lead">Search, view, and manage enrolled students with ease.</p>
+    </div>
+</section>
+
+<!-- SEARCH BAR BELOW HERO -->
+<section class="search-bar-container">
+    <div class="container">
+        <form class="row justify-content-end" method="get" action="@Url.Action("Index", "Students")">
+            <div class="col-md-6 col-lg-4 d-flex">
+                <input type="text" name="search" value="@keyword" class="form-control me-2" placeholder="Search by name, email, phone, etc.">
+                <button class="btn btn-primary" type="submit">
+                    <i class="fa fa-search"></i> Search
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
 <!-- STUDENT CARDS -->
-<div class="container">
+<div class="container pb-5">
     <div class="row">
         @if (!Model.Any())
         {
             <div class="col-12">
-                <div class="alert alert-info text-center">
-                    No students found. Please add a new student.
+                <div class="alert alert-info text-center shadow-sm">
+                    No students found. Try another search or add new students.
                 </div>
             </div>
         }
@@ -42,31 +164,44 @@
         {
             foreach (var student in Model)
             {
-                <div class="col-md-4 mb-4">
-                    <div class="card shadow-sm h-100">
-                        <img src="@student.Photo" class="card-img-top" alt="Student Photo" style="max-height:300px; width:100%; object-fit:contain; background-color:#f8f8f8;">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card student-card">
+                        <img src="@student.Photo" alt="Student Photo" class="card-img-top" />
                         <div class="card-body">
-                            <h5 class="card-title">@student.FullName</h5>
-                            <p class="card-text text-muted small">
-                                <i class="fa fa-envelope"></i> @student.Email <br />
-                                <i class="fa fa-phone"></i> @student.Phone <br />
-                                <i class="fa fa-user"></i> @student.Gender <br />
-                                <i class="fa fa-calendar"></i> @student.EnrollmentDate?.ToShortDateString() <br />
-                                <i class="fa fa-map-marker-alt"></i> @student.Address
-                            </p>
-                            <div class="d-flex justify-content-between">
-                                <a href="@Url.Action("Edit", new { id = student.StudentId })" class="btn btn-primary btn-sm">
-                                    <i class="fa fa-edit"></i> Edit
-                                </a>
-                                <a href="@Url.Action("Delete", new { id = student.StudentId })" class="btn btn-danger btn-sm">
-                                    <i class="fa fa-trash"></i> Delete
-                                </a>
+                            <h5 class="card-title">@Html.Raw(highlight(student.FullName))</h5>
+                            <div class="student-info">
+                                <p><i class="fa fa-envelope"></i> @Html.Raw(highlight(student.Email))</p>
+                                <p><i class="fa fa-phone"></i> @Html.Raw(highlight(student.Phone))</p>
+                                <p><i class="fa fa-user"></i> @Html.Raw(highlight(student.Gender))</p>
+                                @if (student.EnrollmentDate.HasValue)
+                                {
+                                    <p><i class="fa fa-calendar"></i> @student.EnrollmentDate.Value.ToShortDateString()</p>
+                                }
+                                <p><i class="fa fa-map-marker-alt"></i> @Html.Raw(highlight(student.Address))</p>
                             </div>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between">
+                            <a href="@Url.Action("Edit", new { id = student.StudentId })" class="btn btn-outline-primary btn-sm">
+                                <i class="fa fa-edit"></i> Edit
+                            </a>
+                            <a href="@Url.Action("Delete", new { id = student.StudentId })" class="btn btn-outline-danger btn-sm">
+                                <i class="fa fa-trash"></i> Delete
+                            </a>
                         </div>
                     </div>
                 </div>
-
             }
         }
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        const searchInput = document.querySelector('input[name="search"]');
+        searchInput.addEventListener("input", function () {
+            if (this.value.trim() === "") {
+                this.form.submit();
+            }
+        });
+    </script>
+}

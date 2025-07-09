@@ -12,11 +12,24 @@ namespace StudentRecordManagementSystem_MVC5_DBFirst.Controllers
         private readonly StudentDBEntities db = new StudentDBEntities();
 
         // GET: Students
-        public ActionResult Index()
+        public ActionResult Index(string search)
         {
-            var students = db.Students.OrderBy(s => s.FullName).ToList();
-            return View(students);
+            var students = db.Students.AsQueryable();
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                students = students.Where(s =>
+                    s.FullName.Contains(search) ||
+                    s.Email.Contains(search) ||
+                    s.Phone.Contains(search) ||
+                    s.Gender.Contains(search) ||
+                    s.Address.Contains(search)
+                );
+            }
+
+            return View(students.ToList());
         }
+
 
         // GET: Students/Create
         public ActionResult Create()
