@@ -1,4 +1,4 @@
-# 🎓 AcademyPulse – Student Management System 💪🏻
+# 🎓 AcademyRegistration – Student Management System 💪🏻
 
 _A professional ASP.NET MVC5 Web Application for managing student records with style and ease._
 
